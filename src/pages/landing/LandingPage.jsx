@@ -188,7 +188,7 @@ const LandingPage = () => {
           </motion.div>
 
           {/* Hero Content */}
-          <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-8 md:px-16 z-20">
+          <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4 sm:px-8 md:px-16 z-20">
 
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
@@ -204,9 +204,9 @@ const LandingPage = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-6xl md:text-8xl lg:text-[7rem] font-extrabold text-white leading-[1.05] mb-6 uppercase tracking-tighter"
+              className="text-4xl sm:text-6xl md:text-8xl lg:text-[7rem] font-extrabold text-white leading-tight sm:leading-[1.05] mb-6 uppercase tracking-tighter"
             >
-              Architect <br className="hidden md:block" />
+              Architect <br className="hidden sm:block" />
               Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 via-emerald-400 to-teal-300 drop-shadow-[0_0_30px_rgba(16,185,129,0.5)]">Future.</span>
             </motion.h1>
 
