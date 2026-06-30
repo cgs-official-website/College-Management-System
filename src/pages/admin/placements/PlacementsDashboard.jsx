@@ -30,9 +30,9 @@ const PlacementsDashboard = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
         {[
-          { title: 'Students Placed', value: '0', icon: Briefcase, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
-          { title: 'Total Drives', value: '0', icon: Briefcase, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
-          { title: 'Top CTC', value: '0 LPA', icon: Briefcase, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
+          { title: 'Students Placed', value: '185', icon: Briefcase, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
+          { title: 'Total Drives', value: '14', icon: Briefcase, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
+          { title: 'Top CTC', value: '24 LPA', icon: Briefcase, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
         ].map((stat, idx) => (
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -65,10 +65,34 @@ const PlacementsDashboard = () => {
           <h2 className="text-lg font-bold text-slate-900 dark:text-white">Upcoming Placement Drives</h2>
           <button className="text-primary-600 dark:text-primary-400 text-sm font-bold hover:underline">View All</button>
         </div>
-        <div className="flex flex-col items-center justify-center py-8 text-center">
-          <Briefcase className="w-12 h-12 text-slate-300 dark:text-slate-600 mb-3" />
-          <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">No upcoming placement drives</p>
-        </div>
+          <div className="w-full">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="border-b border-slate-200 dark:border-white/10 text-sm text-slate-500 dark:text-slate-400">
+                    <th className="pb-3 font-medium">Company</th>
+                    <th className="pb-3 font-medium">Role</th>
+                    <th className="pb-3 font-medium">CTC (LPA)</th>
+                    <th className="pb-3 font-medium">Date</th>
+                  </tr>
+                </thead>
+                <tbody className="text-sm">
+                  {[
+                    { company: 'Google', role: 'Software Engineer', ctc: '24.0', date: 'Oct 15, 2026' },
+                    { company: 'TCS Digital', role: 'System Analyst', ctc: '7.5', date: 'Oct 20, 2026' },
+                    { company: 'Amazon', role: 'SDE-1', ctc: '21.0', date: 'Nov 02, 2026' }
+                  ].map((drive, i) => (
+                    <tr key={i} className="border-b border-slate-100 dark:border-white/5 last:border-0">
+                      <td className="py-4 font-bold text-slate-900 dark:text-white">{drive.company}</td>
+                      <td className="py-4 text-slate-600 dark:text-slate-300">{drive.role}</td>
+                      <td className="py-4 font-medium text-primary-600 dark:text-primary-400">{drive.ctc}</td>
+                      <td className="py-4 text-slate-500">{drive.date}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
       </motion.div>
 
       <AnimatePresence>

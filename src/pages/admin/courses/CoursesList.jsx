@@ -20,8 +20,8 @@ export default function CoursesList() {
   const [editingCourse, setEditingCourse] = useState(null);
 
   const filteredCourses = courses.filter(course => 
-    course.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    course.code.toLowerCase().includes(searchTerm.toLowerCase())
+    (course.name || course.courseName || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (course.code || course.courseCode || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleOpenAdd = () => {
@@ -110,8 +110,8 @@ export default function CoursesList() {
                     <BookOpen className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900 dark:text-white leading-tight">{course.name}</h3>
-                    <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">{course.code}</span>
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-white leading-tight">{course.name || course.courseName}</h3>
+                    <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">{course.code || course.courseCode}</span>
                   </div>
                 </div>
                 

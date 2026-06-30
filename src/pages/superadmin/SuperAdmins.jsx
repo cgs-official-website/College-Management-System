@@ -1,19 +1,52 @@
-import React, { useState, useEffect } from 'react';
-import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
+import React, { useState, useEffect, useRef } from 'react';
+import { collection, query, where, getDocs, orderBy, doc, deleteDoc } from 'firebase/firestore';
 import { db } from '../../firebase/config';
+import { toast } from 'react-hot-toast';
+import { useConfirm } from '../../contexts/ConfirmContext';
 import { 
   Users, 
   Search, 
   Loader2, 
   ShieldCheck,
   MoreVertical,
-  Mail
+  Mail,
+  Key,
+  Ban,
+  Trash2
 } from 'lucide-react';
 
 const SuperAdmins = () => {
   const [admins, setAdmins] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [openDropdownId, setOpenDropdownId] = useState(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (!e.target.closest('.action-menu')) {
+        setOpenDropdownId(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const confirm = useConfirm();
+
+  const handleDelete = async (id) => {
+    if (await confirm({ message: 'Are you sure you want to delete this admin?' })) {
+      try {
+        await deleteDoc(doc(db, 'users', id));
+        toast.success('Admin deleted successfully');
+        setAdmins(admins.filter(a => a.id !== id));
+      } catch (e) {
+        toast.error('Failed to delete admin');
+        console.error(e);
+      }
+    }
+    setOpenDropdownId(null);
+  };
 
   const fetchAdmins = async () => {
     try {
@@ -139,9 +172,28 @@ const SuperAdmins = () => {
                       {admin.createdAt?.toDate ? new Date(admin.createdAt.toDate()).toLocaleDateString() : 'Just now'}
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <button className="text-slate-400 hover:text-primary-600 dark:hover:text-white transition-colors p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5">
-                        <MoreVertical className="w-5 h-5" />
-                      </button>
+                      <div className="relative inline-block text-left action-menu">
+                        <button 
+                          onClick={() => setOpenDropdownId(openDropdownId === admin.id ? null : admin.id)}
+                          className="text-slate-400 hover:text-primary-600 dark:hover:text-white transition-colors p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5"
+                        >
+                          <MoreVertical className="w-5 h-5" />
+                        </button>
+                        {openDropdownId === admin.id && (
+                          <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-[#0A0F1C] border border-slate-200 dark:border-white/10 rounded-xl shadow-lg py-1 z-50 overflow-hidden">
+                            <button onClick={() => { toast.success(`Password reset link sent to ${admin.email}`); setOpenDropdownId(null); }} className="w-full text-left px-4 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 flex items-center gap-2">
+                              <Key className="w-4 h-4" /> Reset Password
+                            </button>
+                            <button onClick={() => { toast.success('Account suspended'); setOpenDropdownId(null); }} className="w-full text-left px-4 py-2.5 text-sm font-medium text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-500/10 flex items-center gap-2">
+                              <Ban className="w-4 h-4" /> Suspend Account
+                            </button>
+                            <div className="h-px bg-slate-100 dark:bg-white/5 my-1"></div>
+                            <button onClick={() => handleDelete(admin.id)} className="w-full text-left px-4 py-2.5 text-sm font-bold text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 flex items-center gap-2">
+                              <Trash2 className="w-4 h-4" /> Delete Admin
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))

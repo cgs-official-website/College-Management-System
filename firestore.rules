@@ -35,7 +35,7 @@ service cloud.firestore {
     }
 
     function isSameCollege(resourceData) {
-      return ('collegeId' in resourceData) && (resourceData.collegeId == getUserCollegeId() || resourceData.collegeId == 'all');
+      return resourceData == null || (('collegeId' in resourceData) && (resourceData.collegeId == getUserCollegeId() || resourceData.collegeId == 'all'));
     }
 
     // USERS COLLECTION

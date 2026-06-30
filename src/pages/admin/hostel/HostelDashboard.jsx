@@ -39,10 +39,10 @@ const HostelDashboard = () => {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
         {[
-          { title: 'Total Residents', value: '0', icon: Users, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
-          { title: 'Available Rooms', value: '0', icon: DoorClosed, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
-          { title: 'Pending Dues', value: '$0', icon: CreditCard, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
-          { title: 'Open Maintenance', value: '0', icon: Wrench, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
+          { title: 'Total Residents', value: '450', icon: Users, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
+          { title: 'Available Rooms', value: '32', icon: DoorClosed, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
+          { title: 'Pending Dues', value: '₹1,20,000', icon: CreditCard, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
+          { title: 'Open Maintenance', value: '5', icon: Wrench, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
         ].map((stat, idx) => (
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -77,9 +77,22 @@ const HostelDashboard = () => {
             <h2 className="text-lg font-bold text-slate-900 dark:text-white">Block Occupancy</h2>
             <button className="text-primary-600 dark:text-primary-400 text-sm font-bold hover:underline">View All</button>
           </div>
-          <div className="flex flex-col items-center justify-center py-8 text-center">
-            <Home className="w-12 h-12 text-slate-300 dark:text-slate-600 mb-3" />
-            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">No hostel blocks configured</p>
+          <div className="space-y-4">
+            {[
+              { name: 'A Block (Boys)', occupied: 180, total: 200, status: 'Active' },
+              { name: 'B Block (Boys)', occupied: 150, total: 150, status: 'Full' },
+              { name: 'C Block (Girls)', occupied: 120, total: 150, status: 'Active' }
+            ].map((block, i) => (
+              <div key={i} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-white/5 rounded-xl">
+                <div>
+                  <h4 className="font-bold text-slate-900 dark:text-white">{block.name}</h4>
+                  <p className="text-sm text-slate-500">{block.occupied} / {block.total} Students</p>
+                </div>
+                <span className={`px-3 py-1 rounded-full text-xs font-bold ${block.status === 'Full' ? 'bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400' : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400'}`}>
+                  {block.status}
+                </span>
+              </div>
+            ))}
           </div>
         </motion.div>
 
@@ -93,9 +106,23 @@ const HostelDashboard = () => {
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white">Maintenance Requests</h2>
           </div>
-          <div className="flex flex-col items-center justify-center py-8 text-center">
-            <Wrench className="w-12 h-12 text-slate-300 dark:text-slate-600 mb-3" />
-            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">No maintenance requests</p>
+          <div className="space-y-4">
+            {[
+              { room: 'Room 204, A Block', issue: 'AC Not Cooling', status: 'Pending', date: 'Today' },
+              { room: 'Room 105, C Block', issue: 'Leaking Tap', status: 'In Progress', date: 'Yesterday' },
+              { room: 'Room 312, B Block', issue: 'Broken Chair', status: 'Pending', date: '2 days ago' }
+            ].map((req, i) => (
+              <div key={i} className="flex flex-col gap-2 p-4 bg-slate-50 dark:bg-white/5 rounded-xl border-l-4 border-amber-500">
+                <div className="flex justify-between items-start">
+                  <h4 className="font-bold text-slate-900 dark:text-white text-sm">{req.issue}</h4>
+                  <span className="text-xs text-slate-500">{req.date}</span>
+                </div>
+                <div className="flex justify-between items-center text-xs">
+                  <span className="text-slate-500">{req.room}</span>
+                  <span className="font-bold text-amber-600 dark:text-amber-400">{req.status}</span>
+                </div>
+              </div>
+            ))}
           </div>
           <button className="w-full mt-6 py-2.5 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 text-slate-700 dark:text-slate-300 text-sm font-bold rounded-xl transition-colors">
             View All Requests

@@ -5,6 +5,7 @@ import { useStudents } from '../../../hooks/useStudents';
 import { useStaff } from '../../../hooks/useStaff';
 import { useFees } from '../../../hooks/useFees';
 import { Button } from '../../../components/ui/Button';
+import { toast } from 'react-hot-toast';
 
 export default function Reports() {
   const { userData } = useAuth();
@@ -20,7 +21,7 @@ export default function Reports() {
   // Helper function to export array of objects to CSV
   const exportToCSV = (data, filename) => {
     if (!data || !data.length) {
-      alert("No data available to export.");
+      toast.error("No data available to export.");
       setIsExporting(null);
       return;
     }

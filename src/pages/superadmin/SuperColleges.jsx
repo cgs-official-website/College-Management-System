@@ -6,6 +6,7 @@ import { collection, query, getDocs, orderBy, doc, updateDoc, deleteDoc } from '
 import { db } from '../../firebase/config';
 import { createAdminUser } from '../../firebase/adminHelper';
 import { useConfirm } from '../../contexts/ConfirmContext';
+import { toast } from 'react-hot-toast';
 import { 
   Building2, 
   Plus, 
@@ -85,7 +86,7 @@ const SuperColleges = () => {
       fetchColleges();
     } catch (error) {
       console.error("Error deleting college:", error);
-      alert("Failed to delete college.");
+      toast.error("Failed to delete college.");
     }
   };
 

@@ -21,11 +21,13 @@ export default function Admission() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingAdmission, setEditingAdmission] = useState(null);
 
-  const filteredAdmissions = admissions.filter(app => 
-    app.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    app.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    app.courseName?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredAdmissions = admissions.filter(app => {
+    const search = searchTerm.toLowerCase();
+    const fName = app.firstName || app.studentName || '';
+    const lName = app.lastName || '';
+    const cName = app.courseName || '';
+    return fName.toLowerCase().includes(search) || lName.toLowerCase().includes(search) || cName.toLowerCase().includes(search);
+  });
 
   const handleOpenAdd = () => {
     setEditingAdmission(null);
@@ -200,10 +202,10 @@ export default function Admission() {
                     <td className="p-4 pl-6">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-teal-600 flex items-center justify-center text-white font-bold text-sm shadow-md">
-                          {app.firstName.charAt(0)}{app.lastName.charAt(0)}
+                          {(app.firstName || app.studentName || 'A').charAt(0)}{(app.lastName || '').charAt(0)}
                         </div>
                         <div>
-                          <p className="font-bold text-slate-900 dark:text-white text-sm">{app.firstName} {app.lastName}</p>
+                          <p className="font-bold text-slate-900 dark:text-white text-sm">{app.firstName || app.studentName} {app.lastName || ''}</p>
                           <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 flex items-center gap-1">
                             from {app.previousSchool || 'Unknown School'}
                           </p>
@@ -222,12 +224,12 @@ export default function Admission() {
                     </td>
                     <td className="p-4 pr-6 text-right">
                       <div className="flex items-center justify-end gap-2">
-                        {app.status === 'Pending' && (
+                        {(app.status === 'Pending' || app.status === 'pending') && (
                            <button onClick={() => handleOpenEdit(app)} className="flex items-center gap-1 text-xs font-bold px-3 py-1.5 bg-primary-50 text-primary-600 hover:bg-primary-100 dark:bg-primary-500/10 dark:text-primary-400 dark:hover:bg-primary-500/20 rounded-lg transition-colors border border-primary-200 dark:border-primary-500/20">
                              Review <ArrowRight className="w-3 h-3" />
                            </button>
                         )}
-                        {app.status !== 'Pending' && (
+                        {(app.status !== 'Pending' && app.status !== 'pending') && (
                            <button onClick={() => handleOpenEdit(app)} className="p-2 text-slate-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors bg-white dark:bg-[#0A0F1C] border border-slate-200 dark:border-white/10 rounded-lg shadow-sm">
                              <Edit className="w-4 h-4" />
                            </button>

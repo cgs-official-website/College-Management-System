@@ -34,10 +34,10 @@ const TransportDashboard = () => {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
         {[
-          { title: 'Total Buses', value: '0', icon: Bus, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
-          { title: 'Active Routes', value: '0', icon: MapPin, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
-          { title: 'Registered Students', value: '0', icon: Users, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
-          { title: 'QR Scans Today', value: '0', icon: QrCode, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
+          { title: 'Total Buses', value: '12', icon: Bus, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
+          { title: 'Active Routes', value: '8', icon: MapPin, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
+          { title: 'Registered Students', value: '340', icon: Users, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
+          { title: 'QR Scans Today', value: '512', icon: QrCode, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
         ].map((stat, idx) => (
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -94,9 +94,22 @@ const TransportDashboard = () => {
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white">Fleet Alerts</h2>
           </div>
-          <div className="flex flex-col items-center justify-center py-8 text-center">
-            <AlertTriangle className="w-12 h-12 text-slate-300 dark:text-slate-600 mb-3" />
-            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">No active fleet alerts</p>
+          <div className="space-y-4">
+            {[
+              { route: 'Route 4 (City Center)', issue: 'Traffic Delay', severity: 'Medium', time: '10 mins ago' },
+              { route: 'Route 7 (North Park)', issue: 'Bus Break Down', severity: 'High', time: '1 hr ago' },
+            ].map((alert, i) => (
+              <div key={i} className={`flex flex-col gap-2 p-4 bg-slate-50 dark:bg-white/5 rounded-xl border-l-4 ${alert.severity === 'High' ? 'border-rose-500' : 'border-amber-500'}`}>
+                <div className="flex justify-between items-start">
+                  <h4 className="font-bold text-slate-900 dark:text-white text-sm">{alert.issue}</h4>
+                  <span className="text-xs text-slate-500">{alert.time}</span>
+                </div>
+                <div className="flex justify-between items-center text-xs">
+                  <span className="text-slate-500">{alert.route}</span>
+                  <span className={`font-bold ${alert.severity === 'High' ? 'text-rose-600 dark:text-rose-400' : 'text-amber-600 dark:text-amber-400'}`}>{alert.severity} Priority</span>
+                </div>
+              </div>
+            ))}
           </div>
           <button className="w-full mt-6 py-2.5 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 text-slate-700 dark:text-slate-300 text-sm font-bold rounded-xl transition-colors">
             View Log Book

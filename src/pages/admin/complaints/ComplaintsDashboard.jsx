@@ -30,10 +30,10 @@ const ComplaintsDashboard = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
         {[
-          { title: 'Open Tickets', value: '0', icon: MessageSquareWarning, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
-          { title: 'In Progress', value: '0', icon: ShieldAlert, color: 'text-amber-500', bg: 'bg-amber-50 dark:bg-amber-500/10' },
-          { title: 'Resolved', value: '0', icon: CheckCircle2, color: 'text-emerald-500', bg: 'bg-emerald-50 dark:bg-emerald-500/10' },
-          { title: 'Avg. Resolution Time', value: '0 hrs', icon: AlertTriangle, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
+          { title: 'Open Tickets', value: '12', icon: MessageSquareWarning, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
+          { title: 'In Progress', value: '8', icon: ShieldAlert, color: 'text-amber-500', bg: 'bg-amber-50 dark:bg-amber-500/10' },
+          { title: 'Resolved', value: '156', icon: CheckCircle2, color: 'text-emerald-500', bg: 'bg-emerald-50 dark:bg-emerald-500/10' },
+          { title: 'Avg. Resolution Time', value: '24 hrs', icon: AlertTriangle, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
         ].map((stat, idx) => (
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -70,9 +70,41 @@ const ComplaintsDashboard = () => {
              <button className="px-3 py-1 text-xs font-bold text-slate-500 hover:bg-slate-50 dark:hover:bg-white/5 rounded-lg">Resolved</button>
           </div>
         </div>
-        <div className="flex flex-col items-center justify-center py-12 text-center">
-          <MessageSquareWarning className="w-12 h-12 text-slate-300 dark:text-slate-600 mb-3" />
-          <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">No complaints received</p>
+        <div className="w-full mt-6">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="border-b border-slate-200 dark:border-white/10 text-sm text-slate-500 dark:text-slate-400">
+                  <th className="pb-3 font-medium">Ticket ID</th>
+                  <th className="pb-3 font-medium">Issue Description</th>
+                  <th className="pb-3 font-medium">Category</th>
+                  <th className="pb-3 font-medium">Status</th>
+                </tr>
+              </thead>
+              <tbody className="text-sm">
+                {[
+                  { id: 'TKT-1042', issue: 'WiFi not working in B-Block Library', category: 'IT & WiFi', status: 'Open' },
+                  { id: 'TKT-1041', issue: 'Request for projector repair in Room 302', category: 'Infrastructure', status: 'In Progress' },
+                  { id: 'TKT-1039', issue: 'Mess food quality issue', category: 'Hostel', status: 'Resolved' }
+                ].map((ticket, i) => (
+                  <tr key={i} className="border-b border-slate-100 dark:border-white/5 last:border-0 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors cursor-pointer">
+                    <td className="py-4 font-bold text-slate-900 dark:text-white">{ticket.id}</td>
+                    <td className="py-4 text-slate-600 dark:text-slate-300">{ticket.issue}</td>
+                    <td className="py-4 text-slate-500">{ticket.category}</td>
+                    <td className="py-4">
+                      <span className={`px-2 py-1 rounded-md text-xs font-bold ${
+                        ticket.status === 'Open' ? 'bg-primary-100 text-primary-700 dark:bg-primary-500/20 dark:text-primary-400' :
+                        ticket.status === 'In Progress' ? 'bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400' :
+                        'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400'
+                      }`}>
+                        {ticket.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </motion.div>
 

@@ -41,10 +41,10 @@ const MarketingDashboard = () => {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
         {[
-          { title: 'Total Leads (30d)', value: '0', trend: '0%', icon: Users, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
-          { title: 'Email Open Rate', value: '0%', trend: '0%', icon: Mail, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
-          { title: 'WhatsApp Reads', value: '0%', trend: '0%', icon: MessageCircle, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
-          { title: 'Conversion Rate', value: '0%', trend: '0%', icon: TrendingUp, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
+          { title: 'Total Leads (30d)', value: '450', trend: '+15%', icon: Users, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
+          { title: 'Email Open Rate', value: '42%', trend: '+5%', icon: Mail, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
+          { title: 'WhatsApp Reads', value: '85%', trend: '+12%', icon: MessageCircle, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
+          { title: 'Conversion Rate', value: '12%', trend: '+2%', icon: TrendingUp, color: 'text-primary-500', bg: 'bg-primary-50 dark:bg-primary-500/10' },
         ].map((stat, idx) => (
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -82,12 +82,27 @@ const MarketingDashboard = () => {
             <h2 className="text-lg font-bold text-slate-900 dark:text-white">Active Campaigns</h2>
             <button className="text-primary-600 dark:text-primary-400 text-sm font-bold hover:underline">View All</button>
           </div>
-          <div className="flex flex-col items-center justify-center py-12 text-center">
-            <div className="w-16 h-16 bg-slate-50 dark:bg-white/5 rounded-full flex items-center justify-center mb-4">
-              <Target className="w-8 h-8 text-slate-400" />
-            </div>
-            <h3 className="text-slate-900 dark:text-white font-bold text-lg mb-1">No Active Campaigns</h3>
-            <p className="text-slate-500 dark:text-slate-400 text-sm max-w-sm">You haven't launched any marketing campaigns yet. Click "Create Campaign" to get started.</p>
+          <div className="space-y-4">
+            {[
+              { name: 'Fall Admission Push', type: 'Email', status: 'Running', performance: '45% Open' },
+              { name: 'Campus Tour Invites', type: 'WhatsApp', status: 'Running', performance: '80% Read' },
+              { name: 'B.Tech Promo', type: 'SMS', status: 'Completed', performance: '15% Clicked' }
+            ].map((camp, i) => (
+              <div key={i} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-100 dark:border-white/5">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-full bg-primary-50 dark:bg-primary-500/10 text-primary-600 dark:text-primary-400 flex items-center justify-center">
+                    {camp.type === 'Email' ? <Mail className="w-5 h-5"/> : <MessageCircle className="w-5 h-5"/>}
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-slate-900 dark:text-white">{camp.name}</h4>
+                    <p className="text-sm text-slate-500">{camp.type} • {camp.performance}</p>
+                  </div>
+                </div>
+                <span className={`px-3 py-1 rounded-full text-xs font-bold ${camp.status === 'Running' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400' : 'bg-slate-100 text-slate-700 dark:bg-white/10 dark:text-slate-400'}`}>
+                  {camp.status}
+                </span>
+              </div>
+            ))}
           </div>
         </motion.div>
 
@@ -101,9 +116,25 @@ const MarketingDashboard = () => {
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white">Hot Leads to Call</h2>
           </div>
-          <div className="flex flex-col items-center justify-center py-8 text-center">
-            <Users className="w-12 h-12 text-slate-300 dark:text-slate-600 mb-3" />
-            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">No pending leads to call</p>
+          <div className="space-y-4">
+            {[
+              { name: 'Rohan Sharma', interest: 'B.Tech CSE', phone: '+91 98765 43210' },
+              { name: 'Priya Patel', interest: 'MBA Finance', phone: '+91 87654 32109' },
+              { name: 'Amit Kumar', interest: 'B.Tech Mech', phone: '+91 76543 21098' }
+            ].map((lead, i) => (
+              <div key={i} className="flex flex-col gap-2 p-4 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-100 dark:border-white/5 hover:border-primary-500/30 transition-colors cursor-pointer group">
+                <div className="flex justify-between items-start">
+                  <h4 className="font-bold text-slate-900 dark:text-white text-sm">{lead.name}</h4>
+                  <button className="text-primary-600 dark:text-primary-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <PhoneCall className="w-4 h-4" />
+                  </button>
+                </div>
+                <div className="flex justify-between items-center text-xs">
+                  <span className="text-slate-500 font-medium">{lead.interest}</span>
+                  <span className="text-slate-400">{lead.phone}</span>
+                </div>
+              </div>
+            ))}
           </div>
           <button className="w-full mt-6 py-2.5 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 text-slate-700 dark:text-slate-300 text-sm font-bold rounded-xl transition-colors">
             View Lead Pipeline

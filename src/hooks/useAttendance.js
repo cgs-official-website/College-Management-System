@@ -24,6 +24,14 @@ export function useAttendance(collegeId, courseId, date) {
       }
       setIsLoading(false);
     }, (error) => {
+      // If the document doesn't exist yet, Firestore rules will block the read due to missing collegeId
+      // We can safely ignore this and assume empty attendance records
+      if (error.code === 'permission-denied') {
+        setAttendanceRecords({});
+        setIsLoading(false);
+        return;
+      }
+      
       console.error("Error fetching attendance:", error);
       toast.error("Failed to load attendance records.");
       setIsLoading(false);
